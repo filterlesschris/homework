@@ -112,19 +112,19 @@ for target in target_user:
 sentiments_pd = pd.DataFrame.from_dict(sentiment_array)
 ```
 
-    {'User': '@BreitbartNews', 'Compound': 0.032598999999999996, 'Positive': 0.080990000000000006, 'Neutral': 0.044260000000000001, 'Negative': 0.87474999999999992, 'Decision': -15, 'Tweet Count': 100}
+    {'User': '@BreitbartNews', 'Compound': 0.030351, 'Positive': 0.079269999999999993, 'Neutral': 0.048849999999999998, 'Negative': 0.87187999999999999, 'Decision': -16, 'Tweet Count': 100}
     
-    {'User': '@TheOnion', 'Compound': 0.026690000000000005, 'Positive': 0.075420000000000001, 'Neutral': 0.073099999999999998, 'Negative': 0.85149999999999992, 'Decision': -26, 'Tweet Count': 100}
+    {'User': '@TheOnion', 'Compound': 0.047572000000000003, 'Positive': 0.075530000000000014, 'Neutral': 0.062560000000000004, 'Negative': 0.86192000000000002, 'Decision': -25, 'Tweet Count': 100}
     
-    {'User': '@CNN', 'Compound': -0.061739000000000023, 'Positive': 0.061090000000000005, 'Neutral': 0.081640000000000018, 'Negative': 0.85727000000000009, 'Decision': -39, 'Tweet Count': 100}
+    {'User': '@CNN', 'Compound': -0.05793800000000001, 'Positive': 0.061079999999999995, 'Neutral': 0.08201, 'Negative': 0.85690000000000011, 'Decision': -42, 'Tweet Count': 100}
     
-    {'User': '@FoxNews', 'Compound': -0.0030990000000000002, 'Positive': 0.073109999999999994, 'Neutral': 0.078299999999999995, 'Negative': 0.84857999999999989, 'Decision': -30, 'Tweet Count': 100}
+    {'User': '@FoxNews', 'Compound': 0.015401999999999994, 'Positive': 0.065800000000000011, 'Neutral': 0.068780000000000008, 'Negative': 0.86541000000000001, 'Decision': -30, 'Tweet Count': 100}
     
-    {'User': '@BBCWorld', 'Compound': -0.132049, 'Positive': 0.050460000000000005, 'Neutral': 0.13039000000000001, 'Negative': 0.81913999999999987, 'Decision': -39, 'Tweet Count': 100}
+    {'User': '@BBCWorld', 'Compound': -0.15278099999999997, 'Positive': 0.045799999999999993, 'Neutral': 0.13788, 'Negative': 0.81632000000000005, 'Decision': -42, 'Tweet Count': 100}
     
-    {'User': '@nytimes', 'Compound': -0.054048999999999993, 'Positive': 0.059040000000000002, 'Neutral': 0.075550000000000006, 'Negative': 0.86542999999999992, 'Decision': -30, 'Tweet Count': 100}
+    {'User': '@nytimes', 'Compound': -0.052284000000000004, 'Positive': 0.062080000000000003, 'Neutral': 0.076319999999999999, 'Negative': 0.86163000000000012, 'Decision': -30, 'Tweet Count': 100}
     
-    {'User': '@CBSNews', 'Compound': -0.09310800000000001, 'Positive': 0.054230000000000007, 'Neutral': 0.089939999999999992, 'Negative': 0.85581000000000007, 'Decision': -45, 'Tweet Count': 100}
+    {'User': '@CBSNews', 'Compound': -0.028071000000000002, 'Positive': 0.051539999999999989, 'Neutral': 0.054990000000000004, 'Negative': 0.89344999999999997, 'Decision': -32, 'Tweet Count': 100}
     
     
 
@@ -149,6 +149,7 @@ plt.show()
 compound_avg = pd.DataFrame(sentiments_pd.groupby("User").mean()["Compound"], index = None).reset_index()
 
 sns.barplot(x = "User", y = "Compound", data = sentiments_pd, ci = 0)
+plt.title("Average Compound Sentiment Score by News Source")
 plt.savefig('barChart.png')
 plt.show()
 ```
@@ -164,14 +165,14 @@ print("The overall average sentiment score for the last 100 tweets, for each new
 ```
 
                  User  Compound
-    0       @BBCWorld -0.132049
-    1  @BreitbartNews  0.032599
-    2        @CBSNews -0.093108
-    3            @CNN -0.061739
-    4        @FoxNews -0.003099
-    5       @TheOnion  0.026690
-    6        @nytimes -0.054049
-    The overall average sentiment score for the last 100 tweets, for each news source, is: -0.040679
+    0       @BBCWorld -0.152781
+    1  @BreitbartNews  0.030351
+    2        @CBSNews -0.028071
+    3            @CNN -0.057938
+    4        @FoxNews  0.015402
+    5       @TheOnion  0.047572
+    6        @nytimes -0.052284
+    The overall average sentiment score for the last 100 tweets, for each news source, is: -0.02825
     
 
 
