@@ -1,0 +1,30 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><header class="navbar navbar-static">
+        <div class="navbar-header">
+          <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".keen-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+          </button>
+          <a href="https://keen.io?s=db_land" class="navbar-brand" >
+          </a><img src="../assets/img/WVDlogo.png" alt="logo file">
+        </div>
+        <nav class="navbar-collapse collapse keen-navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav main-nav">
+			<li><a href="../index.html" >Home</a></li>
+			  <li>
+			<div class="dropdown">
+				<button class="btn hero-btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				Visualizations
+				<span class="caret"></span>
+				</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+					<li><a href="../windvis.html">Wind Speed v Latitude</a></li>
+					<li><a href="../cloudvis.html">Cloudiness v Latitude</a></li>
+					<li><a href="../humidityvis.html">Humidity v Latitude</a></li>
+					<li><a href="../temperaturevis.html">Temperature v Latitude</a></li>
+					</ul>
+			</div>            
+				<li><a href="../comparisons.html" >Comparisons</a></li>
+			  <li><a href="../data.html" >Data</a></li>
+			  </li>
+          </ul>
+        </nav>
+      </header>
