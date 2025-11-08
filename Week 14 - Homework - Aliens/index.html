@@ -1,142 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Aliens - UFO Sightings in the US</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <style>
-    th.sortable { cursor:pointer; white-space:nowrap; }
-    th.sortable .label { margin-right:6px; }
-    th.sortable::after {
-      content: "⇅"; opacity:.35; font-size:11px; margin-left:4px;
-    }
-    th.sortable[data-order="asc"]::after { content:"▲"; opacity:.9; }
-    th.sortable[data-order="desc"]::after { content:"▼"; opacity:.9; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Aliens - UFO Sightings in the US</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>	
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="form-group">
-          <input type="text" class="form-control" id="state" placeholder="State">
-          <input type="text" class="form-control" id="city" placeholder="City">
-          <input type="text" class="form-control" id="country" placeholder="Country">
-          <input type="text" class="form-control" id="shape" placeholder="Shape">
-          <input type="text" class="form-control" id="datetime" placeholder="Date/Time">
-          <a id="search" class="btn btn-default">Search</a>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table table-striped" id="ufo-table">
-          <thead>
-            <tr>
-              <th class="sortable" data-type="date"><span class="label">Date Time</span></th>
-              <th class="sortable" data-type="string"><span class="label">City</span></th>
-              <th class="sortable" data-type="string"><span class="label">State</span></th>
-              <th class="sortable" data-type="string"><span class="label">Country</span></th>
-              <th class="sortable" data-type="string"><span class="label">Shape</span></th>
-              <th class="sortable" data-type="number"><span class="label">Duration (Minutes)</span></th>
-              <th class="sortable" data-type="string"><span class="label">Comments</span></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3 text-center">
-        <button id="load-btn" class="btn btn-primary">Load More Addresses</button>
-      </div>
-    </div>
-  </div>
+	<div class="container">
+	    <div class="row">
+	      <div class="col-md-4">
+	        <div class="form-group">
+	          <input type="text" class="form-control" id="state" placeholder="State">
+	          <input type="text" class="form-control" id="city" placeholder="City">
+	          <input type="text" class="form-control" id="country" placeholder="Country">
+	          <input type="text" class="form-control" id="shape" placeholder="Shape">
+  	          <input type="text" class="form-control" id="datetime" placeholder="Date/Time">
+	          <a id="search" class="btn btn-default">Search</a>
+	        </div>
+	      </div>
+	    </div>
+	    <div class="row">
+	      <div class="col-md-12">
+	        <table class="table table-striped">
+	          <thead>
+	            <tr>
+	              <th>Date Time</th>
+	              <th>City</th>
+	              <th>State</th>
+	              <th>Country</th>
+	              <th>Shape</th>
+	              <th>Duration (Minutes)</th>
+	              <th>Comments</th>
+	            </tr>
+	          </thead>
+	          <tbody>
+	          </tbody>
+	        </table>
+	      </div>
+	    </div>
+	    <div class="row">
+	      <div class="col-md-6 col-md-offset-3 text-center">
+	        <button id="load-btn" class="btn btn-primary">Load More Addresses</button>
+	      </div>
+	    </div>
+	</div>
 
-  <script src="js/data.js"></script>
-  <script src="js/aliens.js" type="text/javascript"></script>
-
-  <!-- Sorting logic -->
-  <script>
-  (function () {
-    var table = document.getElementById('ufo-table');
-    var tbody = table.querySelector('tbody');
-    var headers = table.querySelectorAll('th.sortable');
-
-    function cellText(tr, idx) {
-      return (tr.children[idx] ? tr.children[idx].textContent : '').trim();
-    }
-
-    function parseVal(text, type) {
-      if (type === 'number') {
-        var n = parseFloat((text || '').replace(/[^\d.\-]/g, ''));
-        return isNaN(n) ? 0 : n;
-      }
-      if (type === 'date') {
-        // Try native parse; fallback for common mm/dd/yyyy, yyyy-mm-dd, etc.
-        var t = Date.parse(text);
-        if (isNaN(t)) {
-          // attempt dd/mm/yyyy -> mm/dd/yyyy swap
-          var m = text.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})(.*)$/);
-          if (m) t = Date.parse(m[2] + '/' + m[1] + '/' + m[3] + (m[4] || ''));
-        }
-        return isNaN(t) ? -Infinity : t;
-      }
-      return (text || '').toLowerCase();
-    }
-
-    function sortBy(idx, type, asc) {
-      var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
-      rows.sort(function(a, b) {
-        var va = parseVal(cellText(a, idx), type);
-        var vb = parseVal(cellText(b, idx), type);
-        if (va < vb) return asc ? -1 : 1;
-        if (va > vb) return asc ? 1 : -1;
-        return 0;
-      });
-      rows.forEach(function(r){ tbody.appendChild(r); });
-    }
-
-    var current = { idx: null, asc: true, type: 'string', th: null };
-
-    headers.forEach(function(th, i) {
-      th.addEventListener('click', function() {
-        var type = th.getAttribute('data-type') || 'string';
-        var asc;
-        if (current.th === th) {
-          asc = !current.asc; // toggle
-        } else {
-          // default to ascending unless Date column (desc first click)
-          asc = (type !== 'date');
-        }
-        // clear indicators
-        headers.forEach(function(h){ h.removeAttribute('data-order'); });
-        th.setAttribute('data-order', asc ? 'asc' : 'desc');
-
-        sortBy(i, type, asc);
-        current = { idx: i, asc: asc, type: type, th: th };
-      });
-    });
-
-    // Keep current sort after table changes (e.g., “Load More”)
-    var mo = new MutationObserver(function() {
-      if (current.idx !== null) {
-        sortBy(current.idx, current.type, current.asc);
-      }
-    });
-    mo.observe(tbody, { childList: true, subtree: false });
-
-    // Auto-apply Date Time DESC on first paint
-    window.addEventListener('load', function() {
-      var dateTh = headers[0]; // first column is Date Time
-      dateTh.setAttribute('data-order', 'desc');
-      current = { idx: 0, asc: false, type: 'date', th: dateTh };
-      sortBy(0, 'date', false);
-    });
-  })();
-  </script>
+    <script src="js/data.js"></script>
+    <script src="js/aliens.js" type="text/javascript"></script>
 </body>
+
 </html>
